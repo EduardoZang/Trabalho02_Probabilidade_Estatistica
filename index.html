@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teoria da Estimação</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Teoria da Estimação para uma Amostra</h1>
+    <p>Estimativa pontual, estimativa intervalar e erro de estimação</p>
+  </header>
+
+  <main>
+    <div class="tabs" role="tablist">
+      <button class="tab active" role="tab" data-tab="media" aria-selected="true">Média</button>
+      <button class="tab" role="tab" data-tab="proporcao" aria-selected="false">Proporção</button>
+    </div>
+
+    <!-- ========== MÉDIA ========== -->
+    <section id="media" class="panel active">
+      <form id="form-media" novalidate>
+
+        <fieldset class="box">
+          <legend><span class="step">1</span> Dados da amostra <span class="tag req">obrigatório</span></legend>
+          <div class="grid g3">
+            <div class="field">
+              <label for="m-x">Média amostral <b>(x̄)</b></label>
+              <input id="m-x" type="text" inputmode="decimal" autocomplete="off" placeholder="ex.: 180">
+              <small>Média dos valores coletados na amostra.</small>
+            </div>
+            <div class="field">
+              <label for="m-s">Desvio padrão amostral <b>(s)</b></label>
+              <input id="m-s" type="text" inputmode="decimal" autocomplete="off" placeholder="ex.: 14">
+              <small>Desvio padrão dos valores da amostra.</small>
+            </div>
+            <div class="field">
+              <label for="m-n">Tamanho da amostra <b>(n)</b></label>
+              <input id="m-n" type="text" inputmode="numeric" autocomplete="off" placeholder="ex.: 30">
+              <small>Quantidade de elementos da amostra.</small>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="cols">
+          <fieldset class="box">
+            <legend><span class="step">2</span> População <span class="tag opt">opcional</span></legend>
+            <div class="field">
+              <label for="m-N">Tamanho da população <b>(N)</b></label>
+              <input id="m-N" type="text" inputmode="numeric" autocomplete="off" placeholder="ex.: 400">
+              <small>Total de elementos da população. Deixe em branco se for desconhecido ou muito grande. Com N, a correção finita é aplicada se n &gt; 5% de N e o total estimado é calculado.</small>
+            </div>
+          </fieldset>
+
+          <fieldset class="box">
+            <legend><span class="step">3</span> Grau de confiança</legend>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="m-conf" value="90"><span><strong>90%</strong><small>z = 1,65</small></span></label>
+              <label class="chip"><input type="radio" name="m-conf" value="95" checked><span><strong>95%</strong><small>z = 1,96</small></span></label>
+              <label class="chip"><input type="radio" name="m-conf" value="99"><span><strong>99%</strong><small>z = 2,58</small></span></label>
+            </div>
+            <p class="box-note">Quanto maior a confiança, mais largo fica o intervalo.</p>
+          </fieldset>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="primary">Calcular</button>
+          <button type="button" class="secondary" data-limpar>Limpar</button>
+        </div>
+        <p class="status" id="status-media" role="status" aria-live="polite"></p>
+      </form>
+
+      <div id="res-media" class="result" hidden></div>
+
+      <figure class="chart-box">
+        <figcaption>Distribuição normal padrão: a área sombreada é o grau de confiança</figcaption>
+        <div id="chart-media"></div>
+        <small>Linha de cima: valores de z · linha de baixo: limites do intervalo (após calcular)</small>
+      </figure>
+    </section>
+
+    <!-- ========== PROPORÇÃO ========== -->
+    <section id="proporcao" class="panel">
+      <form id="form-proporcao" novalidate>
+
+        <fieldset class="box">
+          <legend><span class="step">1</span> Dados da amostra <span class="tag req">obrigatório</span></legend>
+          <div class="grid g2">
+            <div class="field">
+              <label for="p-x">Itens com a característica <b>(x)</b></label>
+              <input id="p-x" type="text" inputmode="numeric" autocomplete="off" placeholder="ex.: 20">
+              <small>Quantos elementos da amostra possuem a característica estudada.</small>
+            </div>
+            <div class="field">
+              <label for="p-n">Tamanho da amostra <b>(n)</b></label>
+              <input id="p-n" type="text" inputmode="numeric" autocomplete="off" placeholder="ex.: 36">
+              <small>Quantidade total de elementos da amostra.</small>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="cols">
+          <fieldset class="box">
+            <legend><span class="step">2</span> População <span class="tag opt">opcional</span></legend>
+            <div class="field">
+              <label for="p-N">Tamanho da população <b>(N)</b></label>
+              <input id="p-N" type="text" inputmode="numeric" autocomplete="off" placeholder="ex.: 800">
+              <small>Total de elementos da população. Deixe em branco se for desconhecido ou muito grande. Com N, a correção finita é aplicada se n &gt; 5% de N e a quantidade estimada na população é calculada.</small>
+            </div>
+          </fieldset>
+
+          <fieldset class="box">
+            <legend><span class="step">3</span> Grau de confiança</legend>
+            <div class="chips">
+              <label class="chip"><input type="radio" name="p-conf" value="90"><span><strong>90%</strong><small>z = 1,65</small></span></label>
+              <label class="chip"><input type="radio" name="p-conf" value="95" checked><span><strong>95%</strong><small>z = 1,96</small></span></label>
+              <label class="chip"><input type="radio" name="p-conf" value="99"><span><strong>99%</strong><small>z = 2,58</small></span></label>
+            </div>
+            <p class="box-note">Quanto maior a confiança, mais largo fica o intervalo.</p>
+          </fieldset>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="primary">Calcular</button>
+          <button type="button" class="secondary" data-limpar>Limpar</button>
+        </div>
+        <p class="status" id="status-proporcao" role="status" aria-live="polite"></p>
+      </form>
+
+      <div id="res-proporcao" class="result" hidden></div>
+
+      <figure class="chart-box">
+        <figcaption>Distribuição normal padrão: a área sombreada é o grau de confiança</figcaption>
+        <div id="chart-proporcao"></div>
+        <small>Linha de cima: valores de z · linha de baixo: limites do intervalo (após calcular)</small>
+      </figure>
+    </section>
+  </main>
+
+  <footer>
+    <p>Valores de z: 90% = 1,65 · 95% = 1,96 · 99% = 2,58. Fator de correção finita aplicado quando n &gt; 5% de N.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
